@@ -9,7 +9,12 @@ class Treatment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'treatmentName',
+        'description'
+    ];
+
     public function appointment(){
-        return $this->hasMany(Appointment::class);
+        return $this->hasMany(Appointment::class, 'treatment_id');
     }
 }
