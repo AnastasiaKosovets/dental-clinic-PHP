@@ -17,7 +17,10 @@ class TreatmentFactory extends Factory
     public function definition(): array
     {
         return [
-            //
-        ];
+            //'treatmentName',
+        // 'description'
+        'treatmentName' => fake()->sentence($nbWords = 6, $variableNbWords = true),
+        'description' => fake()->paragraph($nbSentences = 3, $variableNbSentences = true)
+    ];
     }
 }
