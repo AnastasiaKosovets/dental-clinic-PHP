@@ -51,14 +51,14 @@ class User extends Authenticatable
     ];
 
     public function role(){
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id');
     }
 
     public function appointmentD(){
-        return $this->hasMany(Appointment::class, 'doctor_id');
+        return $this->hasMany(Appointment::class, 'doctor_id', 'id');
     }
 
     public function appointmentP(){
-        return $this->hasMany(Appointment::class, 'patient_id');
+        return $this->hasMany(Appointment::class, 'patient_id', 'id');
     }
 }

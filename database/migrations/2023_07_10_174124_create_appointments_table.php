@@ -13,9 +13,16 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->id();
-            $table->integer('doctor_id');
-            $table->integer('patient_id');
-            $table->integer('treatment_id');
+
+            $table->unsignedBigInteger('doctor_id');
+            $table->foreign('doctor_id')->references('id')->on('users');
+
+            $table->unsignedBigInteger('patient_id');
+            $table->foreign('patient_id')->references('id')->on('users');
+
+            $table->unsignedBigInteger('treatment_id');
+            $table->foreign('treatment_id')->references('id')->on('treatments');
+
             $table->date('date');
             $table->timestamps();
         });
