@@ -25,7 +25,8 @@ Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
 // TREATMENTS CONTROLLER
 Route::get('/treatments', [TreatmentController::class, 'getAllTreatments']);
 Route::post('/treatment', [TreatmentController::class, 'createTreatment']);
-
+Route::put('/treatments/{id}', [TreatmentController::class, 'updateTreatment']);
+Route::delete('/treatments/{id}', [TreatmentController::class, 'deleteTreatment']);
 
 
 
