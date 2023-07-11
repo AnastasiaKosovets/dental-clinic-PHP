@@ -34,13 +34,10 @@ class UserFactory extends Factory
             'address' => fake()->sentence(),
             'telefonNumber' => fake()->randomNumber(9, true),
             'collegialNumber' => fake()->randomNumber(9, true),
-            'role_id' => 2
+            'role_id' => fake()->randomElement(range(2, 3))
         ];
     }
 
-    /**
-     * Indicate that the model's email address should be unverified.
-     */
     public function unverified(): static
     {
         return $this->state(fn (array $attributes) => [
