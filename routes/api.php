@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -20,6 +21,15 @@ Route::post('/user', [UserController::class, 'createUser']);
 Route::put('/users/{id}', [UserController::class, 'updateUser']);
 Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
 // No puedo borrar users creados con FACTORY ????????????????
+
+// TREATMENTS CONTROLLER
+Route::get('/treatments', [TreatmentController::class, 'getAllTreatments']);
+Route::post('/treatment', [TreatmentController::class, 'createTreatment']);
+
+
+
+
+
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
