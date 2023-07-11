@@ -25,7 +25,7 @@ class AppointmentFactory extends Factory
         'doctor_id' => $doctorId,
         'patient_id' => $patientId,
         // 'role' => fake()->randomElement($userRoles),
-        'treatment_id' => fake()->randomElement([1, 2, 3, 4, 5, 6, 7]),
+        'treatment_id' => fake()->randomElement(range(1, 50)),
         // 'role_id' => fake()->randomElement(range(1, 50)),
         'date' => fake()->dateTime($max = 'now', $timezone = null)
         ];
