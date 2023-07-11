@@ -19,14 +19,16 @@ use Illuminate\Support\Facades\Route;
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/patients', [UserController::class, 'getAllPatients']);
 Route::get('/doctors', [UserController::class, 'getAllDoctors']);
-// Route::get('/user/{id}', [UserController::class, 'getUserProfile']);
+// Route::get('/user/{id}', [UserController::class, 'getUserProfile']);  -> era por si se puede hacerlo en una línea solo
 
-Route::get('/user/{id}', function($id){
-    $user = User::find($id);
-    return $user;
-});
+// Route::get('/user/{id}', function($id){
+//     $user = User::find($id);
+//     return $user;
+// });
 
 Route::post('/user', [UserController::class, 'createUser']);
+
+Route::put('/users/{id}', [UserController::class, 'updateUser']);
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

@@ -127,4 +127,57 @@ class UserController extends Controller
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    public function updateUser(Request $request, $id)
+{
+    try {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|string',
+            'firstName' => 'required|string',
+            'lastName' => 'required|string',
+            'document' => 'required|string',
+            'dateOfBirth' => 'required|string',
+            'address' => 'required|string',
+            'telefonNumber' => 'required|integer',
+            'collegialNumber' => 'required|integer',
+            'role_id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
+        }
+
+        $validData = $validator->validated();
+
+        $user = User::find($id);
+
+        if (!$user) {
+            return response()->json(['message' => "User with id {$id} not found"], Response::HTTP_NOT_FOUND);
+        }
+
+        $user->update([
+            'email' => $validData['email'],
+            'firstName' => $validData['firstName'],
+            'lastName' => $validData['lastName'],
+            'document' => $validData['document'],
+            'dateOfBirth' => $validData['dateOfBirth'],
+            'address' => $validData['address'],
+            'telefonNumber' => $validData['telefonNumber'],
+            'collegialNumber' => $validData['collegialNumber'],
+            'role_id' => $validData['role_id']
+        ]);
+
+        return response()->json([
+            'message' => 'User updated successfully',
+            'data' => $user,
+            'success' => true
+        ], Response::HTTP_OK);
+    } catch (\Throwable $th) {
+        Log::error('Error updating user: ' . $th->getMessage());
+
+        return response()->json([
+            'message' => 'Error updating user'
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
+}
 }
