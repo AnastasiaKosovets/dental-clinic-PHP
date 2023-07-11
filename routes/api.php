@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\UserController;
 use App\Models\User;
@@ -28,7 +29,8 @@ Route::post('/treatment', [TreatmentController::class, 'createTreatment']);
 Route::put('/treatments/{id}', [TreatmentController::class, 'updateTreatment']);
 Route::delete('/treatments/{id}', [TreatmentController::class, 'deleteTreatment']);
 
-
+// APPOINTMENT CONTROLLER
+Route::get('/appointments', [AppointmentController::class, 'getAllAppointments']);
 
 
 
