@@ -17,6 +17,11 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $day = str_pad((string) fake()->numberBetween(1, 28), 2, '0', STR_PAD_LEFT);
+        $month = str_pad((string) fake()->numberBetween(1, 12), 2, '0', STR_PAD_LEFT);
+        $year = (string) fake()->numberBetween(1900, 2022);
+        $dateOfBirth = $day.'/'.$month.'/'.$year;
+
         return [
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
@@ -25,7 +30,7 @@ class UserFactory extends Factory
             'firstName' => fake()->firstName(),
             'lastName' => fake()->lastName(),
             'document' => fake()->randomNumber(8, true).fake()->randomLetter(1),
-            'dateOfBirth' => fake()->randomNumber(2, true).'/'.fake()->randomNumber(2, true).'/'.fake()->randomNumber(4, true),
+            'dateOfBirth' => $dateOfBirth,
             'address' => fake()->sentence(),
             'telefonNumber' => fake()->randomNumber(9, true),
             'collegialNumber' => fake()->randomNumber(9, true),
