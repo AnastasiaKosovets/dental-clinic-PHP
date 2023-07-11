@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'firstName' => fake()->firstName(),
             'lastName' => fake()->lastName(),
-            'document' => fake()->randomNumber(8, true).fake()->randomLetter(1),
+            'document' => fake()->randomNumber(8, true).strtoupper(fake()->randomLetter()),
             'dateOfBirth' => $dateOfBirth,
             'address' => fake()->sentence(),
             'telefonNumber' => fake()->randomNumber(9, true),
