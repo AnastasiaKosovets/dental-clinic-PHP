@@ -31,8 +31,8 @@ class UserFactory extends Factory
             'lastName' => fake()->lastName(),
             'document' => fake()->randomNumber(8, true).strtoupper(fake()->randomLetter()),
             'dateOfBirth' => $dateOfBirth,
-            'address' => fake()->sentence(),
-            'telefonNumber' => fake()->randomNumber(9, true),
+            'address' => fake()->streetAddress(),
+            'telefonNumber' => 6 . fake()->randomNumber(8, true),
             'collegialNumber' => fake()->randomNumber(9, true),
             'role_id' => fake()->randomElement(range(2, 3))
         ];

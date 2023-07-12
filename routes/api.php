@@ -1,22 +1,23 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TreatmentController;
 use App\Http\Controllers\UserController;
+use App\Models\Appointment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+// AUTH CONTROLLER
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
 // USERS CONTROLLER
 Route::get('/users', [UserController::class, 'getAllUsers']);
 Route::get('/patients', [UserController::class, 'getAllPatients']);
 Route::get('/doctors', [UserController::class, 'getAllDoctors']);
-// Route::get('/user/{id}', [UserController::class, 'getUserProfile']);  -> era por si se puede hacerlo en una línea solo
-
-Route::get('/user/{id}', function($id){
-    $user = User::find($id);
-    return $user;
-});
+Route::get('/profile', [UserController::class, 'profile'])->middleware('auth:sanctum');
 
 Route::post('/user', [UserController::class, 'createUser']);
 Route::put('/users/{id}', [UserController::class, 'updateUser']);
@@ -31,6 +32,7 @@ Route::delete('/treatments/{id}', [TreatmentController::class, 'deleteTreatment'
 
 // APPOINTMENT CONTROLLER
 Route::get('/appointments', [AppointmentController::class, 'getAllAppointments']);
+Route::get('/appointments/{id}', [AppointmentController::class, 'getMyAppointment']);
 
 
 

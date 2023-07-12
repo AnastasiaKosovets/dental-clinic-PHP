@@ -16,6 +16,17 @@ class Appointment extends Model
         'date'
     ];
 
+    protected $hidden = [
+        'doctor_id',
+        'patient_id',
+        'treatment_id',
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $casts = [
+        'date' => 'datetime'
+    ];
     public function doctor(){
         return $this->belongsTo(User::class, 'doctor_id');
     }

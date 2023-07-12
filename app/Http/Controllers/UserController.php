@@ -28,8 +28,7 @@ class UserController extends Controller
         }
     }
 
-    public function getAllPatients()
-    {
+    public function getAllPatients(){
         try {
             $patientId = User::where('role_id', 2)->get();
             return response()->json([
@@ -46,8 +45,7 @@ class UserController extends Controller
         }
     }
 
-    public function getAllDoctors()
-    {
+    public function getAllDoctors(){
         try {
             $doctorId = User::where('role_id', 3)->get();
             return response()->json([
@@ -64,26 +62,42 @@ class UserController extends Controller
         }
     }
 
-    public function getUserProfile($id)
+
+    // public function getUserProfile($id){
+    //     try {
+    //         $user = User::where('id', $id)->get();
+    //         return response()->json([
+    //             'message' => 'User retrieved',
+    //             'data' => $user,
+    //             'success' => true,
+    //         ], Response::HTTP_OK);
+    //     } catch (\Throwable $th) {
+    //         Log::error('Error getting user' . $th->getMessage());
+
+    //         return response()->json([
+    //             'message' => 'Error retrieving user'
+    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    //     }
+    // }
+    public function profile()
     {
         try {
-            $user = User::where('user_id', $id)->get();
+            $user = auth()->user();
             return response()->json([
-                'message' => 'Tasks retrieved',
+                'message' => 'Profile retrieved',
                 'data' => $user,
-                'success' => true,
-            ], Response::HTTP_OK);
+                'success' => true
+            ], Response::HTTP_FORBIDDEN);
         } catch (\Throwable $th) {
-            Log::error('Error getting tasks' . $th->getMessage());
+            Log::error('Error getting profile' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error retrieving tasks'
+                'message' => 'Error getting profile'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function createUser(Request $request)
-    {
+    public function createUser(Request $request){
         try {
             $validator = Validator::make($request->all(), [
                 'email' => 'required|string',
@@ -129,8 +143,7 @@ class UserController extends Controller
         }
     }
 
-    public function updateUser(Request $request, $id)
-    {
+    public function updateUser(Request $request, $id){
         try {
             $validator = Validator::make($request->all(), [
                 'email' => 'required|string',
@@ -182,8 +195,7 @@ class UserController extends Controller
         }
     }
 
-    public function deleteUser($id)
-    {
+    public function deleteUser($id){
         try {
             $user = User::find($id);
 

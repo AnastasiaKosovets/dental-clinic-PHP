@@ -9,23 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AppointmentController extends Controller
 {
-    // public function getAllAppointments(){
-    //     try {
-    //         $appointments = Appointment::with(['patient', 'treatment', 'doctor'])->get();
-
-    //         return response()->json([
-    //             'message' => 'Appointments retrieved',
-    //             'data' => $appointments,
-    //             'success' => true
-    //         ], Response::HTTP_OK);
-    //     } catch (\Throwable $th) {
-    //         Log::error('Error getting appointments' . $th->getMessage());
-
-    //         return response()->json([
-    //             'message' => 'Error retrieving appointments'
-    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
-    //     }
-    // }
     public function getAllAppointments()
     {
         try {
@@ -34,15 +17,9 @@ class AppointmentController extends Controller
             // en conjunto con $query
 
             $appointments = Appointment::with([
-                'patient' => function ($query) {
-                    $query->select('id', 'firstName', 'lastName');
-                },
-                'treatment' => function ($query) {
-                    $query->select('id', 'treatmentName', 'description');
-                },
-                'doctor' => function ($query) {
-                    $query->select('id', 'firstName', 'lastName');
-                }
+                'patient:id,firstName,lastName',
+                'treatment:id,treatmentName,description',
+                'doctor:id,firstName,lastName'
             ])->get();
 
             if ($appointments->isEmpty()) {
@@ -51,51 +28,10 @@ class AppointmentController extends Controller
                     'success' => true
                 ], Response::HTTP_OK);
             }
-            // se utiliza método 'getAttribute()' que nos permite acceder a los valores
-            //  de los atributos específicos de las relaciones
-            // accedemos a la primera cita médica en la respuesta JSON utilizando el índice
-
-            // $appointment = $appointments[0];
-            // $patientFirstName = $appointment->patient->getAttribute('firstName');
-            // $patientLastName = $appointment->patient->getAttribute('lastName');
-            // $treatmentName = $appointment->treatment->getAttribute('treatmentName');
-            // $treatmentDescription = $appointment->treatment->getAttribute('description');
-            // $doctorFirstName = $appointment->doctor->getAttribute('firstName');
-            // $doctorLastName = $appointment->doctor->getAttribute('lastName');
-
-            $appointmentData = [];
-            foreach ($appointments as $appointment) {
-                $patientFirstName = $appointment->patient->getAttribute('firstName');
-                $patientLastName = $appointment->patient->getAttribute('lastName');
-                $treatmentName = $appointment->treatment->getAttribute('treatmentName');
-                $treatmentDescription = $appointment->treatment->getAttribute('description');
-                $doctorFirstName = $appointment->doctor->getAttribute('firstName');
-                $doctorLastName = $appointment->doctor->getAttribute('lastName');
-
-                $appointmentData[] = [
-                    'patientFirstName' => $patientFirstName,
-                    'patientLastName' => $patientLastName,
-                    'treatmentName' => $treatmentName,
-                    'treatmentDescription' => $treatmentDescription,
-                    'doctorFirstName' => $doctorFirstName,
-                    'doctorLastName' => $doctorLastName,
-                ];
-            }
-
-            // return response()->json([
-            //     'message' => 'Appointment retrieved',
-            //     'patientFirstName' => $patientFirstName,
-            //     'patientLastName' => $patientLastName,
-            //     'treatmentName' => $treatmentName,
-            //     'treatmentDescription' => $treatmentDescription,
-            //     'doctorFirstName' => $doctorFirstName,
-            //     'doctorLastName' => $doctorLastName,
-            //     'success' => true
-            // ], Response::HTTP_OK);
 
             return response()->json([
                 'message' => 'Appointments retrieved',
-                'data' => $appointmentData,
+                'data' => $appointments,
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
@@ -106,5 +42,70 @@ class AppointmentController extends Controller
                 'success' => false
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function getMyAppointment($id)
+    {
+        try {
+            $appointment = Appointment::with([
+                'patient:id,firstName,lastName',
+                'treatment:id,treatmentName,description',
+                'doctor:id,firstName,lastName'
+                ])->get();
+
+            if ($appointment->isEmpty()) {
+                return response()->json([
+                    'message' => 'No appointments found',
+                    'success' => true
+                ], Response::HTTP_OK);
+            }
+
+            
+
+            return response()->json([
+                'message' => 'Appointment retrieved',
+                'data' => $appointment,
+                'success' => true
+            ], Response::HTTP_OK);
+        } catch (\Throwable $th) {
+            Log::error('Error getting appointment' . $th->getMessage());
+
+            return response()->json([
+                'message' => 'Error retrieving appointment',
+                'error' => $th->getMessage(),
+                'success' => false
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    public function getDoctorAppointments($id){
+        try {
+            $appointment = Appointment::with([
+                'patient:id,firstName,lastName',
+                'treatment:id,treatmentName,description',
+                'doctor:id,firstName,lastName'
+            ])->get();
+
+        if ($appointment->isEmpty()) {
+            return response()->json([
+                'message' => 'No appointments found',
+                'success' => true
+            ], Response::HTTP_OK);
+        }
+
+        return response()->json([
+            'message' => 'Appointment retrieved',
+            'data' => $appointment,
+            'success' => true
+        ], Response::HTTP_OK);
+    } catch (\Throwable $th) {
+        Log::error('Error getting appointment' . $th->getMessage());
+
+        return response()->json([
+            'message' => 'Error retrieving appointment',
+            'error' => $th->getMessage(),
+            'success' => false
+        ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    }
     }
 }
