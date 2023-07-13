@@ -12,16 +12,16 @@ use Illuminate\Support\Facades\Route;
 // AUTH CONTROLLER
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout/{id}', [AuthController::class, 'logout']);
 
 // USERS CONTROLLER
-Route::get('/users', [UserController::class, 'getAllUsers']);
+Route::get('/users', [UserController::class, 'getAllUsers'])->middleware('auth:sanctum', 'isAdmin');
 Route::get('/patients', [UserController::class, 'getAllPatients']);
 Route::get('/doctors', [UserController::class, 'getAllDoctors']);
 Route::get('/profile', [UserController::class, 'profile'])->middleware('auth:sanctum');
-
 Route::post('/user', [UserController::class, 'createUser']);
-Route::put('/users/{id}', [UserController::class, 'updateUser']);
-Route::delete('/users/{id}', [UserController::class, 'deleteUser']);
+Route::put('/users/{id}', [UserController::class, 'updateUser'])->middleware('auth:sanctum', 'isAdmin');;
+Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->middleware('auth:sanctum', 'isAdmin');;
 // No puedo borrar users creados con FACTORY ????????????????
 
 // TREATMENTS CONTROLLER

@@ -145,6 +145,7 @@ class UserController extends Controller
 
     public function updateUser(Request $request, $id){
         try {
+            $user = auth()->user();
             $validator = Validator::make($request->all(), [
                 'email' => 'required|string',
                 'firstName' => 'required|string',
@@ -197,6 +198,7 @@ class UserController extends Controller
 
     public function deleteUser($id){
         try {
+            $user = auth()->user();
             $user = User::find($id);
 
             if (!$user) {
