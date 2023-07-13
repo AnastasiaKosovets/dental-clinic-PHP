@@ -33,8 +33,8 @@ Route::delete('/treatments/{id}', [TreatmentController::class, 'deleteTreatment'
 Route::get('/appointments', [AppointmentController::class, 'getAllAppointments'])->middleware('auth:sanctum');
 Route::get('/appointments/{id}', [AppointmentController::class, 'getMyAppointment'])->middleware('auth:sanctum');
 Route::post('/appointment', [AppointmentController::class, 'createAppointment'])->middleware('auth:sanctum');
-
-
+Route::put('/appointments/{id}', [AppointmentController::class, 'updateAppointment'])->middleware('auth:sanctum');
+Route::delete('/appointments/{id}', [AppointmentController::class, 'deleteAppointment'])->middleware('auth:sanctum');
 
 
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
