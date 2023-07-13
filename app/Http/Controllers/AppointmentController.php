@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Appointment;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
 class AppointmentController extends Controller
@@ -12,10 +14,6 @@ class AppointmentController extends Controller
     public function getAllAppointments()
     {
         try {
-            // function ($query) es una función anónima en PHP. restricción/persionalización
-            // de las relaciones. Puedo definir instrucciones adicionales utilizando select
-            // en conjunto con $query
-
             $appointments = Appointment::with([
                 'patient:id,firstName,lastName',
                 'treatment:id,treatmentName,description',
@@ -107,5 +105,58 @@ class AppointmentController extends Controller
             'success' => false
         ], Response::HTTP_INTERNAL_SERVER_ERROR);
     }
+    }
+
+    public function createAppointment(Request $request)
+    {
+        try {
+            $userId = auth()->user()->id;
+
+            $validator = Validator::make($request->all(), [
+                'doctor_id' => 'required|integer',
+                'treatment_id' => 'required|integer',
+                'date' => 'required|date'
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json($validator->errors(), 400);
+            };
+
+            $validData = $validator->validated();
+
+            // se comprueba el id del doctor
+            $doctorId = $validData['doctor_id'];
+            $doctorRole = User::where('id', $doctorId)->first(['role_id'])->role_id;
+            
+            if ($doctorRole !== 3) {
+                return response()->json([
+                    'message' => 'Choosen doctor does not exist'
+                ], Response::HTTP_OK);
+            }
+
+            $appointment = Appointment::create([
+                'patient_id' => $userId,
+                'doctor_id' => $validData['doctor_id'],
+                'treatment_id' => $validData['treatment_id'],
+                'date' => $validData['date'],
+                'created_at' => date_create(),
+                'updated_at' => date_create()
+            ]);
+            // dd($appointment);
+            $appointment->load('patient:id,firstName,lastName', 'doctor:id,firstName,lastName', 'treatment:id,treatmentName,description');
+            return response()->json([
+                'message' => 'Appointment retrieved',
+                'data' => $appointment,
+                'success' => true
+            ], Response::HTTP_OK);
+
+        } catch (\Throwable $th) {
+            Log::error('Error creating Appointment' . $th->getMessage());
+            dd($th->getMessage());
+
+            return response()->json([
+                'message' => 'Error creating appointment'
+            ], Response::HTTP_INTERNAL_SERVER_ERROR);
+        }
     }
 }

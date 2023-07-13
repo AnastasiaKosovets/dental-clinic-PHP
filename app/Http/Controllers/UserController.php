@@ -20,15 +20,16 @@ class UserController extends Controller
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error getting tasks' . $th->getMessage());
+            Log::error('Error getting users' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error retrieving tasks'
+                'message' => 'Error retrieving users'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function getAllPatients(){
+    public function getAllPatients()
+    {
         try {
             $patientId = User::where('role_id', 2)->get();
             return response()->json([
@@ -37,15 +38,16 @@ class UserController extends Controller
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error getting tasks' . $th->getMessage());
+            Log::error('Error getting users' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error retrieving tasks'
+                'message' => 'Error retrieving users'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function getAllDoctors(){
+    public function getAllDoctors()
+    {
         try {
             $doctorId = User::where('role_id', 3)->get();
             return response()->json([
@@ -54,31 +56,14 @@ class UserController extends Controller
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error getting tasks' . $th->getMessage());
+            Log::error('Error getting users' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error retrieving tasks'
+                'message' => 'Error retrieving users'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-
-    // public function getUserProfile($id){
-    //     try {
-    //         $user = User::where('id', $id)->get();
-    //         return response()->json([
-    //             'message' => 'User retrieved',
-    //             'data' => $user,
-    //             'success' => true,
-    //         ], Response::HTTP_OK);
-    //     } catch (\Throwable $th) {
-    //         Log::error('Error getting user' . $th->getMessage());
-
-    //         return response()->json([
-    //             'message' => 'Error retrieving user'
-    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
-    //     }
-    // }
     public function profile()
     {
         try {
@@ -97,7 +82,8 @@ class UserController extends Controller
         }
     }
 
-    public function createUser(Request $request){
+    public function createUser(Request $request)
+    {
         try {
             $validator = Validator::make($request->all(), [
                 'email' => 'required|string',
@@ -130,20 +116,21 @@ class UserController extends Controller
                 'role_id' => $validData['role_id']
             ]);
             return response()->json([
-                'message' => 'Tasks retrieved',
+                'message' => 'User retrieved',
                 'data' => $user,
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error getting tasks' . $th->getMessage());
+            Log::error('Error creating User' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error retrieving tasks'
+                'message' => 'Error retrieving user'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
-    public function updateUser(Request $request, $id){
+    public function updateUser(Request $request, $id)
+    {
         try {
             $user = auth()->user();
             $validator = Validator::make($request->all(), [
@@ -196,7 +183,8 @@ class UserController extends Controller
         }
     }
 
-    public function deleteUser($id){
+    public function deleteUser($id)
+    {
         try {
             $user = auth()->user();
             $user = User::find($id);
@@ -209,7 +197,8 @@ class UserController extends Controller
             $user->delete();
             return response()->json([
                 'message' => "User deleted successfully",
-                'success' => true
+                'success' => true,
+                'data' => $user
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
             Log::error('Error deleting user: ' . $th->getMessage());

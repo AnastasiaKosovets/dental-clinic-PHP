@@ -20,19 +20,19 @@ Route::get('/patients', [UserController::class, 'getAllPatients']);
 Route::get('/doctors', [UserController::class, 'getAllDoctors']);
 Route::get('/profile', [UserController::class, 'profile'])->middleware('auth:sanctum');
 Route::post('/user', [UserController::class, 'createUser']);
-Route::put('/users/{id}', [UserController::class, 'updateUser'])->middleware('auth:sanctum', 'isAdmin');;
-Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->middleware('auth:sanctum', 'isAdmin');;
-// No puedo borrar users creados con FACTORY ????????????????
+Route::put('/users/{id}', [UserController::class, 'updateUser'])->middleware('auth:sanctum', 'isAdmin');
+Route::delete('/users/{id}', [UserController::class, 'deleteUser'])->middleware('auth:sanctum', 'isAdmin');
 
 // TREATMENTS CONTROLLER
 Route::get('/treatments', [TreatmentController::class, 'getAllTreatments']);
-Route::post('/treatment', [TreatmentController::class, 'createTreatment']);
-Route::put('/treatments/{id}', [TreatmentController::class, 'updateTreatment']);
-Route::delete('/treatments/{id}', [TreatmentController::class, 'deleteTreatment']);
+Route::post('/treatment', [TreatmentController::class, 'createTreatment'])->middleware('auth:sanctum');
+Route::put('/treatments/{id}', [TreatmentController::class, 'updateTreatment'])->middleware('auth:sanctum');
+Route::delete('/treatments/{id}', [TreatmentController::class, 'deleteTreatment'])->middleware('auth:sanctum', 'isAdmin');;
 
 // APPOINTMENT CONTROLLER
-Route::get('/appointments', [AppointmentController::class, 'getAllAppointments']);
-Route::get('/appointments/{id}', [AppointmentController::class, 'getMyAppointment']);
+Route::get('/appointments', [AppointmentController::class, 'getAllAppointments'])->middleware('auth:sanctum');
+Route::get('/appointments/{id}', [AppointmentController::class, 'getMyAppointment'])->middleware('auth:sanctum');
+Route::post('/appointment', [AppointmentController::class, 'createAppointment'])->middleware('auth:sanctum');
 
 
 

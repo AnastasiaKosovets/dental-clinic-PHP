@@ -21,10 +21,10 @@ class TreatmentController extends Controller
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error getting tasks' . $th->getMessage());
+            Log::error('Error getting treatments' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error retrieving tasks'
+                'message' => 'Error retrieving treatments'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -46,16 +46,16 @@ class TreatmentController extends Controller
                 'description' => $validData['description']
             ]);
             return response()->json([
-                'message' => 'Tasks retrieved',
+                'message' => 'Treatments retrieved',
                 'data' => $treatment,
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error getting tasks' . $th->getMessage());
+            Log::error('Error getting treatments' . $th->getMessage());
             dd($th->getMessage());
 
             return response()->json([
-                'message' => 'Error retrieving treatment'
+                'message' => 'Error retrieving treatments'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -81,15 +81,15 @@ class TreatmentController extends Controller
                 'description' => $validData['description']
             ]);
             return response()->json([
-                'message' => 'User updated successfully',
+                'message' => 'Treatment updated successfully',
                 'data' => $treatment,
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error updating user: ' . $th->getMessage());
+            Log::error('Error updating treatments: ' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error updating user'
+                'message' => 'Error updating treatments'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
@@ -110,10 +110,10 @@ class TreatmentController extends Controller
                 'success' => true
             ], Response::HTTP_OK);
         } catch (\Throwable $th) {
-            Log::error('Error deleting user: ' . $th->getMessage());
+            Log::error('Error deleting treatments: ' . $th->getMessage());
 
             return response()->json([
-                'message' => 'Error deleting user'
+                'message' => 'Error deleting treatments'
             ], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
