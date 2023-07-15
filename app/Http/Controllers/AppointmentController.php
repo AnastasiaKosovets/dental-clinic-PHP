@@ -49,7 +49,7 @@ class AppointmentController extends Controller
                 'patient:id,firstName,lastName',
                 'treatment:id,treatmentName,description',
                 'doctor:id,firstName,lastName'
-                ])->get();
+            ])->get();
 
             if ($appointment->isEmpty()) {
                 return response()->json([
@@ -58,7 +58,7 @@ class AppointmentController extends Controller
                 ], Response::HTTP_OK);
             }
 
-            
+
 
             return response()->json([
                 'message' => 'Appointment retrieved',
@@ -76,36 +76,37 @@ class AppointmentController extends Controller
         }
     }
 
-    public function getDoctorAppointments($id){
-        try {
-            $appointment = Appointment::with([
-                'patient:id,firstName,lastName',
-                'treatment:id,treatmentName,description',
-                'doctor:id,firstName,lastName'
-            ])->get();
+    // public function getDoctorAppointments($id)
+    // {
+    //     try {
+    //         $appointment = Appointment::with([
+    //             'patient:id,firstName,lastName',
+    //             'treatment:id,treatmentName,description',
+    //             'doctor:id,firstName,lastName'
+    //         ])->get();
 
-        if ($appointment->isEmpty()) {
-            return response()->json([
-                'message' => 'No appointments found',
-                'success' => true
-            ], Response::HTTP_OK);
-        }
+    //         if ($appointment->isEmpty()) {
+    //             return response()->json([
+    //                 'message' => 'No appointments found',
+    //                 'success' => true
+    //             ], Response::HTTP_OK);
+    //         }
 
-        return response()->json([
-            'message' => 'Appointment retrieved',
-            'data' => $appointment,
-            'success' => true
-        ], Response::HTTP_OK);
-    } catch (\Throwable $th) {
-        Log::error('Error getting appointment' . $th->getMessage());
+    //         return response()->json([
+    //             'message' => 'Appointment retrieved',
+    //             'data' => $appointment,
+    //             'success' => true
+    //         ], Response::HTTP_OK);
+    //     } catch (\Throwable $th) {
+    //         Log::error('Error getting appointment' . $th->getMessage());
 
-        return response()->json([
-            'message' => 'Error retrieving appointment',
-            'error' => $th->getMessage(),
-            'success' => false
-        ], Response::HTTP_INTERNAL_SERVER_ERROR);
-    }
-    }
+    //         return response()->json([
+    //             'message' => 'Error retrieving appointment',
+    //             'error' => $th->getMessage(),
+    //             'success' => false
+    //         ], Response::HTTP_INTERNAL_SERVER_ERROR);
+    //     }
+    // }
 
     public function createAppointment(Request $request)
     {
@@ -127,7 +128,7 @@ class AppointmentController extends Controller
             // se comprueba el id del doctor
             $doctorId = $validData['doctor_id'];
             $doctorRole = User::where('id', $doctorId)->first(['role_id'])->role_id;
-            
+
             if ($doctorRole !== 3) {
                 return response()->json([
                     'message' => 'Choosen doctor does not exist'
@@ -149,7 +150,6 @@ class AppointmentController extends Controller
                 'data' => $appointment,
                 'success' => true
             ], Response::HTTP_OK);
-
         } catch (\Throwable $th) {
             Log::error('Error creating Appointment' . $th->getMessage());
             dd($th->getMessage());
